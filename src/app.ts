@@ -1,5 +1,4 @@
 class Catagotchi {
-
   private alive: boolean;
 
   private mood: number;
@@ -87,7 +86,7 @@ class Catagotchi {
     if (!this.alive) {
       throw new Error('Dead catagochi cannot meow.');
     } else {
-      console.log('Meow')
+      console.log('Meow');
     }
   }
 
@@ -104,11 +103,11 @@ class Catagotchi {
   public gameTick() {
     if (this.alive) {
       if (this.hunger >= 10 || this.energy <= 0) {
-        this.catDied()
+        this.catDied();
       }
 
       this.energy -= (Math.random() > 0.7 ? 1 : 0);
-      this.hunger += (Math.random() > 0.5 ? 1: 0);
+      this.hunger += (Math.random() > 0.5 ? 1 : 0);
       this.mood -= (Math.random() > 0.3 ? 1 : 0);
 
       this.updateDisplays();
