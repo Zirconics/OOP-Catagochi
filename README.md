@@ -1,8 +1,14 @@
-# Catagotchi Game
+# Catagochi Game
 
 In the `src` directory you will find the start of the Catagochi game. 
 
 In `build` is a basic index.html and a stylesheet. Feel free to change as you need.
+
+## Running Catagochi
+
+Before you are able to run the Catagochi game it is needed to run the `npm install` command.
+After installing the various modules run either `npm run build` or `npm run watch`.
+Open the application with one of the webservers described below. 
 
 ## Webserver
 
