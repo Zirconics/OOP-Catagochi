@@ -15,5 +15,5 @@ Applications built with es6 modules must be run on a webserver. On Visual Studio
 
 ## ts-skeleton-app 
 
-This repository is based on [ts-skeleton-app](https://github.com/HZ-HBO-ICT/ts-skeleton-app)
+This repository is based on [ts-skeleton-app](https://github.com/HZ-HBO-ICT/ts-skeleton-app) /n
 All *.js build artifacts in the `build` directory are ignored.
