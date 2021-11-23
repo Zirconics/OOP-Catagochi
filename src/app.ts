@@ -1,11 +1,7 @@
+import Cat from './Cat.js';
+
 class Catagotchi {
-  private alive: boolean;
-
-  private mood: number;
-
-  private energy: number;
-
-  private hunger: number;
+  private cat: Cat;
 
   private gameDOM: Element;
 
@@ -17,7 +13,7 @@ class Catagotchi {
 
   private displayStatus: HTMLDivElement;
 
-  private lastTickTimeStamp : number;
+  private lastTickTimeStamp: number;
 
   /**
    * Creates the Catagotchi game. Sets all of the attributes of the
@@ -27,101 +23,34 @@ class Catagotchi {
    *
    * @param gameDOM pass the DOM element where the game will run.
    */
-  public constructor(gameDOM : Element) {
+  public constructor(gameDOM: Element) {
+    this.cat = new Cat(true, 10, 10, 0);
     this.gameDOM = gameDOM;
-
-    this.alive = true;
-
-    this.mood = 10;
-    this.energy = 10;
-    this.hunger = 0;
 
     this.getDOMElements();
     this.updateDisplays();
     this.startRunning();
-    this.meow();
-  }
-
-  /**
-   * Function that feeds the catagochi
-   * Decreases the hunger variable with 2 points.
-   * Calls the meow() function.
-   */
-  public feed(): void {
-    this.hunger -= 2;
-    this.meow();
-  }
-
-  /**
-   * Funtion that plays with the catagochi
-   * Increases the mood variable with 2 points.
-   * Increases the hunger variable with 1 point.
-   * Decreases the energy variable with 1 point.
-   * Calls the meow() function.
-   */
-  public play(): void {
-    this.mood += 2;
-    this.hunger += 1;
-    this.energy -= 1;
-    this.meow();
-  }
-
-  /**
-   * Function that lets the catagochi sleep.
-   * Increases the energy variable with 2 points.
-   * Increases the hunger variable with 1 point.
-   * Calls the meow() function.
-   */
-  public sleep(): void {
-    this.energy += 2;
-    this.hunger += 1;
-    this.meow();
-  }
-
-  /**
-   * Function that lets the catagochi make a sound.
-   * Checks if the catagochi is alive before loggin "Meow" to the console.
-   */
-  private meow(): void {
-    if (!this.alive) {
-      throw new Error('Dead catagochi cannot meow.');
-    } else {
-      console.log('Meow');
-    }
-  }
-
-  /**
-   * Function that sets the Alive boolean to false when the catagochi dies.
-   */
-  private catDied(): void {
-    this.alive = false;
+    this.cat.meow();
   }
 
   /**
    * Called for every game tick.
    */
   public gameTick() {
-    if (this.alive) {
-      if (this.hunger >= 10 || this.energy <= 0) {
-        this.catDied();
-      }
-
-      this.energy -= (Math.random() > 0.7 ? 1 : 0);
-      this.hunger += (Math.random() > 0.5 ? 1 : 0);
-      this.mood -= (Math.random() > 0.3 ? 1 : 0);
-
-      this.updateDisplays();
+    if (this.cat.isAlive) {
+      this.cat.ignore();
     }
+    this.updateDisplays();
   }
 
   /**
-   * Funtion that updates all displays.
+   * Funtion that updates all displays
    */
   private updateDisplays(): void {
-    this.displayEnergy.innerHTML = String(this.energy);
-    this.displayHunger.innerHTML = String(this.hunger);
-    this.displayMood.innerHTML = String(this.mood);
-    this.displayStatus.innerHTML = (this.alive === true ? 'Alive' : 'Dead');
+    this.displayEnergy.innerHTML = String(this.cat.getEnergy());
+    this.displayHunger.innerHTML = String(this.cat.getHunger());
+    this.displayMood.innerHTML = String(this.cat.getMood());
+    this.displayStatus.innerHTML = this.cat.isAlive() === true ? 'Alive' : 'Dead';
   }
 
   /**
@@ -133,9 +62,15 @@ class Catagotchi {
     this.displayEnergy = this.gameDOM.querySelector('#displayEnergy');
     this.displayStatus = this.gameDOM.querySelector('#displayStatus');
 
-    this.gameDOM.querySelector('#buttonFeed').addEventListener('click', this.feed.bind(this));
-    this.gameDOM.querySelector('#buttonPlay').addEventListener('click', this.play.bind(this));
-    this.gameDOM.querySelector('#buttonSleep').addEventListener('click', this.sleep.bind(this));
+    this.gameDOM
+      .querySelector('#buttonFeed')
+      .addEventListener('click', this.cat.feed);
+    this.gameDOM
+      .querySelector('#buttonPlay')
+      .addEventListener('click', this.cat.play);
+    this.gameDOM
+      .querySelector('#buttonSleep')
+      .addEventListener('click', this.cat.sleep);
   }
 
   /**
@@ -170,6 +105,7 @@ class Catagotchi {
 }
 
 const init = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const catGame = new Catagotchi(document.querySelector('#game'));
 };
 
