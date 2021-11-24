@@ -24,7 +24,7 @@ export default class Cat {
 
   /**
    * Function that lets the catagochi make a sound.
-   * Checks if the catagochi is alive before loggin "Meow" to the console.
+   * Checks if the catagochi is alive before logging "Meow" to the console.
    */
   public meow(): void {
     if (!this.alive) {
