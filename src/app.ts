@@ -29,10 +29,10 @@ class Game {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
 
-    this.background = this.loadNewImage('img/HAPPY CAT.png');
-
     this.cat = new Cat(true, 10, 10, 0);
     this.keyListener = new KeyListener();
+
+    this.drawCat();
 
     this.startRunning();
     this.cat.meow();
@@ -80,14 +80,43 @@ class Game {
   }
 
   /**
+   * Draws cat to the canvas.
+   */
+  private drawCat() {
+    if (!this.cat.isAlive()) {
+      this.background = this.loadNewImage('img/DEAD CAT.png');
+    }
+
+    if (this.cat.isAlive()) {
+      if (this.cat.getEnergy() >= 8 && this.cat.getHunger() <= 2 && this.cat.getMood() >= 8) {
+        this.background = this.loadNewImage('img/HAPPY CAT.png');
+      }
+
+      if (this.cat.getEnergy() >= 3 && this.cat.getHunger() <= 7 && this.cat.getMood() >= 3) {
+        this.background = this.loadNewImage('img/NORMAL CAT.png');
+      }
+
+      if (this.cat.getEnergy() <= 2) {
+        this.background = this.loadNewImage('img/SLEEPY CAT.png');
+      }
+
+      if (this.cat.getHunger() >= 8 || this.cat.getMood() <= 2) {
+        this.background = this.loadNewImage('img/GRUMPY CAT.png');
+      }
+    }
+  }
+
+  /**
    * Called for every game tick.
    */
   public gameTick() {
     if (this.cat.isAlive) {
       this.cat.ignore();
 
+      this.drawCat();
       this.keyboardInput();
     }
+    this.drawCat();
     this.updateDisplays();
   }
 

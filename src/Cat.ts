@@ -75,6 +75,7 @@ export default class Cat {
    */
   private catDied(): void {
     this.alive = false;
+    console.log('Catagochi died');
   }
 
   /**
