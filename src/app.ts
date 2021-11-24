@@ -1,9 +1,12 @@
 import Cat from './Cat.js';
+import KeyListener from './KeyListener.js';
 
 class Catagotchi {
   private cat: Cat;
 
   private gameDOM: Element;
+
+  private keyListener: KeyListener
 
   private displayMood: HTMLDivElement;
 
@@ -24,8 +27,10 @@ class Catagotchi {
    * @param gameDOM pass the DOM element where the game will run.
    */
   public constructor(gameDOM: Element) {
-    this.cat = new Cat(true, 10, 10, 0);
     this.gameDOM = gameDOM;
+
+    this.cat = new Cat(true, 10, 10, 0);
+    this.keyListener = new KeyListener();
 
     this.getDOMElements();
     this.updateDisplays();
@@ -39,6 +44,18 @@ class Catagotchi {
   public gameTick() {
     if (this.cat.isAlive) {
       this.cat.ignore();
+
+      if (this.keyListener.isKeyDown(KeyListener.KEY_P)) {
+        this.cat.play();
+      }
+
+      if (this.keyListener.isKeyDown(KeyListener.KEY_S)) {
+        this.cat.sleep();
+      }
+
+      if (this.keyListener.isKeyDown(KeyListener.KEY_F)) {
+        this.cat.feed();
+      }
     }
     this.updateDisplays();
   }
@@ -61,16 +78,6 @@ class Catagotchi {
     this.displayMood = this.gameDOM.querySelector('#displayMood');
     this.displayEnergy = this.gameDOM.querySelector('#displayEnergy');
     this.displayStatus = this.gameDOM.querySelector('#displayStatus');
-
-    this.gameDOM
-      .querySelector('#buttonFeed')
-      .addEventListener('click', this.cat.feed);
-    this.gameDOM
-      .querySelector('#buttonPlay')
-      .addEventListener('click', this.cat.play);
-    this.gameDOM
-      .querySelector('#buttonSleep')
-      .addEventListener('click', this.cat.sleep);
   }
 
   /**
